@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survey Details</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<h2>Survey Responses</h2>
+
+<button onclick="fetchSurveyData()">Refresh</button>
+
+<table border=1>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Full Name</th>
+    <th>Phone Number</th>
+    <th>Email</th>
+    <th>Address</th>
+    <th>Current Company</th>
+    <th>Years of Experience</th>
+  </tr>
+  </thead>
+  <tbody id="surveyTableBody">
+  <!-- Data will be inserted here dynamically -->
+  </tbody>
+</table>
+
+<script>
+  function fetchSurveyData() {
+    fetch("http://localhost:8080/survey/getAll")
+            .then(response => {
+              if (!response.ok) {
+                throw new Error("Failed to fetch survey data");
+              }
+              return response.json();
+            })
+            .then(data => {
+              let tableBody = document.getElementById("surveyTableBody");
+              tableBody.innerHTML = ""; // Clear previous data
+
+              data.forEach(survey => {
+                let row = `<tr>
+                            <td>${survey.id}</td>
+                            <td>${survey.full_name}</td>
+                            <td>${survey.phone_number}</td>
+                            <td>${survey.email}</td>
+                            <td>${survey.address}</td>
+                            <td>${survey.current_company}</td>
+                            <td>${survey.years_of_experience}</td>
+                        </tr>`;
+                tableBody.innerHTML += row;
+              });
+            })
+            .catch(error => {
+              console.error("Error fetching survey data:", error);
+              alert("Error fetching survey data: " + error.message);
+            });
+  }
+
+  // Load data when the page loads
+  window.onload = fetchSurveyData;
+</script>
+</body>
+</html>
