@@ -75,5 +75,4 @@ CREATE TABLE survey (
 ## Future Enhancements
 - Add frontend validation for form inputs.
 - Implement Bootstrap for better UI/UX.
-- Add REST API for external integration.
 
